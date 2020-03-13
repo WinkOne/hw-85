@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const album = require('./app/album');
 const artist = require('./app/artist');
@@ -14,6 +15,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.static('public'));
+app.use(cors());
 
 
 
@@ -24,8 +26,8 @@ const run = async () => {
         useCreateIndex: true,
     });
 
-    app.use('/artist', album);
-    app.use('/album', artist);
+    app.use('/artist', artist);
+    app.use('/album', album);
     app.use('/track', track);
     app.use('/users', users);
     app.use('/track_history', trackHistory);

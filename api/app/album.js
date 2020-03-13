@@ -15,8 +15,7 @@ router.get('/', async (req, res) => {
     const query = req.query.artist;
 
     if (req.query.artist){
-        const item = await Album.find({executor: query}).populate('executor');
-
+        const item = await Album.find({executor: query}).sort({yearOfIssueAlbum: 1}).populate('executor');
         return res.send(item);
     }
 
