@@ -1,4 +1,4 @@
-import axiosApi from "../axios-api";
+import axiosApi from "../../axios-api";
 
 
 export const FETCH_ARTIST_REQUEST = 'FETCH_ARTIST_REQUEST';
@@ -68,7 +68,7 @@ export const fetchNameAlbumError = () => {
 export const getTrack = (id) => {
     return dispatch => {
         dispatch(fetchTrackRequest());
-        axiosApi.get('/track?album=' + id).then(response => {
+        return axiosApi.get('/track?album=' + id).then(response => {
             dispatch(fetchTrackSuccess(response.data));
             // console.log(response.data);
         }, error => {

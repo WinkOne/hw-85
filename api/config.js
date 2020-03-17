@@ -6,5 +6,11 @@ const rootPath = __dirname;
 module.exports ={
     rootPath,
     uploadPath: path.join(rootPath, 'public', 'uploads'),
-    port: 8001
+    database: 'mongodb://localhost',
+    databaseOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+    },
+    port: 5555
 };

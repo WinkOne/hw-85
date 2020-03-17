@@ -20,11 +20,7 @@ app.use(cors());
 
 
 const run = async () => {
-    await mongoose.connect('mongodb://localhost', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-    });
+    await mongoose.connect(config.database, config.databaseOptions);
 
     app.use('/artist', artist);
     app.use('/album', album);

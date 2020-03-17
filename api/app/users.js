@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../middleware/auth');
 const User = require('../model/User');
 const bcrypt = require('bcrypt');
 
@@ -40,7 +41,7 @@ router.post('/sessions', async (req, res) => {
 
     await user.save();
 
-    res.send({token: user.token});
+    res.send(user);
 });
 
 router.get('/', async (req, res) => {
@@ -64,7 +65,7 @@ router.get('/', async (req, res) => {
 
     console.log(authorizationHeader);
 
-    return res.send({message: 'You have access to this endpoint, Welcome ' + user.username + '!' });
+    return res.send(user);
 });
 
 module.exports = router;

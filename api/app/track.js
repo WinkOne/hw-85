@@ -1,6 +1,6 @@
 const express = require('express');
 
-const Artist = require('../model/Track');
+const Track = require('../model/Track');
 
 const router = express.Router();
 
@@ -8,12 +8,12 @@ router.get('/', async (req, res) => {
     const query = req.query.album;
 
     if (req.query.album) {
-        const item = await Artist.find({album: query});
+        const item = await Track.find({album: query});
 
         return res.send(item);
     }
 
-    const item = await Artist.find();
+    const item = await Track.find();
 
     res.send(item);
 });
@@ -22,7 +22,13 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const trackData = req.body;
 
-    const track = new Artist(trackData);
+    const track = new Track(trackData);
+
+    const numberTrack = await Track.find({album: req.body.album});
+
+    track.number = numberTrack.length+1;
+
+    console.log(track);
 
     await track.save();
 
