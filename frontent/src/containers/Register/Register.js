@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 import '../../App.css'
-import {Button, Col, Form, FormGroup} from "reactstrap";
+import {Badge, Col, Form, FormGroup, Input, Label} from "reactstrap";
 import {registerUser} from "../../store/action/usersActions";
 import {connect} from "react-redux";
 import FormElement from "../../components/UI/Form/FormElement";
+import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
 
 class Register extends Component {
     state = {
         username: '',
-        password: ''
+        password: '',
+        avatar: ''
     };
 
     inputChangeHandler = event => {
@@ -17,9 +20,24 @@ class Register extends Component {
         })
     };
 
+    fileChangeHandler = event => {
+        this.setState({
+            [event.target.name]: event.target.files[0]
+        })
+    };
+
     submitFormHandler = event => {
         event.preventDefault();
-        this.props.registerUser({...this.state});
+
+        const formData = new FormData();
+
+        Object.keys(this.state).forEach(key => {
+            let value = this.state[key];
+
+            formData.append(key, value);
+        });
+
+        this.props.registerUser(formData);
     };
 
     getFieldError = fieldName => {
@@ -33,36 +51,42 @@ class Register extends Component {
     render() {
         return (
             <>
-                <h2>Register new user</h2>
+                <h1><Badge color="secondary">Register new user</Badge></h1>
                 <hr className="HRColor"/>
-                <Form onSubmit={this.submitFormHandler}>
-                    <FormElement
-                        propertyName="username"
-                        title="Username"
-                        value={this.state.username}
-                        onChange={this.inputChangeHandler}
-                        error={this.getFieldError('username')}
-                        placeholder="Enter username"
-                        autoComplete="new-username"
-                    />
-                    <FormElement
-                        propertyName="password"
-                        title="Password"
-                        type="password"
-                        value={this.state.password}
-                        onChange={this.inputChangeHandler}
-                        error={this.getFieldError('password')}
-                        placeholder="Enter password"
-                        autoComplete="new-password"
-                    />
-                    <FormGroup row>
-                        <Col sm={{offset: 2, size: 10}}>
-                            <Button type="submit">
-                                Register
-                            </Button>
-                        </Col>
-                    </FormGroup>
-                </Form>
+                <Paper style={{padding: '25px'}} elevation={3}>
+                    <Form onSubmit={this.submitFormHandler}>
+                        <FormElement
+                            propertyName="username"
+                            title="Username"
+                            value={this.state.username}
+                            onChange={this.inputChangeHandler}
+                            error={this.getFieldError('username')}
+                            placeholder="Enter username"
+                            autoComplete="new-username"
+                        />
+                        <FormElement
+                            propertyName="password"
+                            title="Password"
+                            type="password"
+                            value={this.state.password}
+                            onChange={this.inputChangeHandler}
+                            error={this.getFieldError('password')}
+                            placeholder="Enter password"
+                            autoComplete="new-password"
+                        />
+                        <FormGroup>
+                            <Label for="avatar">File</Label>
+                            <Input onChange={this.fileChangeHandler} type="file" name="avatar" id="avatar"/>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Col>
+                                <Button type="submit" variant="contained" color="primary">
+                                    Register
+                                </Button>
+                            </Col>
+                        </FormGroup>
+                    </Form>
+                </Paper>
             </>
         );
     }

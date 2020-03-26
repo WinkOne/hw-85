@@ -17,32 +17,50 @@ export const loginUserRequest = () => ({type: LOGIN_USER_REQUEST});
 export const loginUserSuccess = user => ({type: LOGIN_USER_SUCCESS, user});
 export const loginUserFailure = error => ({type: LOGIN_USER_FAILURE, error});
 
+export const LOGOUT_USER = 'LOGOUT_USER';
+
+export const logoutUser = () => {
+    return {type: LOGOUT_USER};
+};
+
 export const registerUser = userData => {
-  return async dispatch => {
-    try {
-      dispatch(registerUserRequest());
-      await axiosApi.post('/users', userData);
-      dispatch(registerUserSuccess());
-      dispatch(push('/'));
-    } catch (error) {
-      if (error.response) {
-        dispatch(registerUserFailure(error.response.data));
-      } else {
-        dispatch(registerUserFailure({global: 'Network error or no internet'}));
-      }
+    return async dispatch => {
+        try {
+            dispatch(registerUserRequest());
+            await axiosApi.post('/users', userData);
+            dispatch(registerUserSuccess());
+            dispatch(push('/'));
+        } catch (error) {
+            if (error.response) {
+                dispatch(registerUserFailure(error.response.data));
+            } else {
+                dispatch(registerUserFailure({global: 'Network error or no internet'}));
+            }
+        }
     }
-  }
 };
 
 export const loginUser = userData => {
-  return async dispatch => {
-    try {
-      dispatch(loginUserRequest());
-      const response = await axiosApi.post('/users/sessions', userData);
-      dispatch(loginUserSuccess(response.data));
-      dispatch(push('/'));
-    } catch (error) {
-      dispatch(loginUserFailure(error.response.data));
+    return async dispatch => {
+        try {
+            dispatch(loginUserRequest());
+            const response = await axiosApi.post('/users/sessions', userData);
+            dispatch(loginUserSuccess(response.data));
+            dispatch(push('/'));
+        } catch (error) {
+            dispatch(loginUserFailure(error.response.data));
+        }
     }
-  }
+};
+
+export const logoutUserGet = () => {
+    return async (dispatch, getState) => {
+        const token = getState().users.user.token;
+        const headers = {'Authorization': 'Token ' + token};
+
+        await axiosApi.delete('/users/sessions', {headers});
+
+        dispatch(logoutUser());
+        dispatch(push('/'))
+    }
 };

@@ -13,6 +13,12 @@ const ArtistSchema = new Schema({
     },
     infoArtist: {
         type: String,
+    },
+    published : {
+        type: Boolean,
+        enum: [true, false],
+        default: false,
+        required: true
     }
 });
 

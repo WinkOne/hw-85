@@ -1,10 +1,10 @@
 import {FETCH_ALBUM_SUCCESS, FETCH_ARTIST_SUCCESS, FETCH_NAME_ALBUM_SUCCESS, FETCH_TRACK_SUCCESS} from "../action/action";
 
 const initialState ={
-    artist: [],
-    album: [],
-    track: [],
-    artistAlbum: []
+    artist: null,
+    album: null,
+    track: null,
+    artistAlbum: null
 };
 
 const reducer = (state = initialState, action) => {

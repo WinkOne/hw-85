@@ -2,13 +2,10 @@ import React from 'react';
 import {NavItem, NavLink} from "reactstrap";
 import {NavLink as RouterNavLink} from "react-router-dom";
 
-const AnonymousMenu = () => (
+const AnonymousMenu = (props) => (
   <>
-    <NavItem>
-      <NavLink tag={RouterNavLink} to="/register" exact>Sign Up</NavLink>
-    </NavItem>
-    <NavItem>
-      <NavLink tag={RouterNavLink} to="/login" exact>Login</NavLink>
+    <NavItem style={{listStyle: 'none'}}>
+      <NavLink style={{color: '#fff'}} tag={RouterNavLink} to={props.to} exact>{props.children}</NavLink>
     </NavItem>
   </>
 );

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import '../../App.css'
 import {connect} from "react-redux";
 import {getTrackHistory} from "../../store/action/trackHistoryActions";
-import {Container} from "reactstrap";
+import {Badge, Container} from "reactstrap";
 import moment from "moment";
 
 
@@ -15,7 +15,7 @@ class TrackHistory extends Component {
         return (
            <Container>
                <div>
-                   <h1>Track History</h1>
+                   <h1><Badge color="secondary">Track History</Badge></h1>
                    <hr className="HRColor"/>
                     <div>
                         {this.props.trackHistory && this.props.trackHistory.map(item => (

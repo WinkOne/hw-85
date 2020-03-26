@@ -1,14 +1,32 @@
+const path = require('path');
 const express = require('express');
 const auth = require('../middleware/auth');
 const User = require('../model/User');
 const bcrypt = require('bcrypt');
-
+const multer = require("multer");
+const nanoid = require('nanoid');
+const config = require("../config");
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, config.uploadPath),
+    filename: (req, file, cb) => cb(null, nanoid() + path.extname(file.originalname))
+});
 
-   const user = new User(req.body);
-    console.log(user);
+const upload = multer({storage});
+
+router.post('/', upload.single('avatar'), async (req, res) => {
+
+    const users = req.body;
+
+    if(req.file) {
+        users.avatar = req.file.filename;
+    }
+
+    const user = new User({
+        username: users.username,
+        password: users.password
+    });
 
     try {
        user.generateToken();
@@ -44,28 +62,32 @@ router.post('/sessions', async (req, res) => {
     res.send(user);
 });
 
-router.get('/', async (req, res) => {
-    const authorizationHeader = req.get('Authorization');
-
-    if(!authorizationHeader){
-        return res.status(401).send({error: 'Not authorization'});
-    }
-
-    const [type, token] = authorizationHeader.split(' ');
-
-    if(type !== "Token" || !token){
-        return res.status(401).send({error: 'Not authorization'})
-    }
-
-    const user = await User.findOne({token});
-
-    if(!user){
-        return res.status(401).send({error: 'Not authorization'})
-    }
-
-    console.log(authorizationHeader);
+router.get('/', auth, async (req, res) => {
+    const user = req.user;
 
     return res.send(user);
+});
+
+router.delete('/sessions', async (req, res) => {
+   const success = {message: 'Success'};
+
+   try {
+       const token = req.get('Authorization').split(' ')[1];
+
+       if (!token) return res.send(success);
+
+       const user = await User.findOne({token});
+
+       if(!user) return res.send(success);
+
+       user.generateToken();
+
+       await user.save();
+
+       return res.send(success);
+   } catch (e) {
+       return res.send(e)
+   }
 });
 
 module.exports = router;

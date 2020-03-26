@@ -70,7 +70,6 @@ export const getTrack = (id) => {
         dispatch(fetchTrackRequest());
         return axiosApi.get('/track?album=' + id).then(response => {
             dispatch(fetchTrackSuccess(response.data));
-            // console.log(response.data);
         }, error => {
             dispatch(fetchTrackError(error));
         });
@@ -110,3 +109,16 @@ export const getArtist = () => {
         });
     }
 };
+
+
+export const getPublishedArtist = () => {
+    return dispatch => {
+        dispatch(fetchArtistRequest());
+        axiosApi.get('/artist/published').then(response => {
+            dispatch(fetchArtistSuccess(response.data));
+        }, error => {
+            dispatch(fetchArtistError(error));
+        });
+    }
+};
+

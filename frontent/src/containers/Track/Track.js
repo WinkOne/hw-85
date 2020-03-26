@@ -3,34 +3,22 @@ import '../../App.css'
 import './Track.css'
 import {Redirect} from 'react-router-dom'
 import {connect} from "react-redux";
-import {Badge, Container, ListGroup} from "reactstrap";
+import {Alert, Badge, Container, ListGroup} from "reactstrap";
 import {getTrack, getNameAlbum} from "../../store/action/action";
-import imagePlay from '../../assets/image/play-button (1).png'
-import imagePause from '../../assets/image/pause (1).png'
 import {trackHistoryPush} from "../../store/action/trackHistoryActions";
 
 
-class Track extends Component {
 
+
+
+class Track extends Component {
     state = {
-        artist: ''
+        loading: false
     };
 
     async componentDidMount() {
         this.getNameAlbumHandler();
         await this.props.getTrack(this.props.match.params.id)
-        //     .then(async () => {
-        //     if (!this.props.nameArtist.executor.nameArtist){
-        //        await this.setState({
-        //             artist: "Sorry error request on the server, fix it soon"
-        //         })
-        //     } else {
-        //       await this.setState({
-        //             artist: this.props.nameArtist.executor.nameArtist
-        //         })
-        //     }
-        //
-        // });
     }
 
     getNameAlbumHandler = () => {
@@ -38,7 +26,7 @@ class Track extends Component {
     };
 
     getPushTrackHistory = (id) => {
-      this.props.trackHistoryPush(id)
+        this.props.trackHistoryPush(id);
     };
 
     render() {
@@ -47,23 +35,20 @@ class Track extends Component {
         } else {
             return this.props.trackThis.artistAlbum && (
                 <Container>
-                    <div style={{display: "flex", justifyContent: 'space-around', marginTop: '35px'}}>
-                        {this.state.artist && <h1>Artist: <Badge color="secondary">{this.state.artist}</Badge></h1>}
+                    <div style={{marginTop: '35px'}}>
                         {this.props.trackThis.artistAlbum.titleAlbum &&
-                        <h1>Album: <Badge color="secondary">{this.props.trackThis.artistAlbum.titleAlbum}</Badge></h1>}
+                        <h2>{this.props.nameArtist && this.props.nameArtist.executor.nameArtist}-<Badge
+                            color="secondary">{this.props.trackThis.artistAlbum.titleAlbum}</Badge></h2>
+                        }
                     </div>
                     <hr className="HRColor"/>
                     <ListGroup>
                         {this.props.trackThis.track && this.props.trackThis.track.map(item => (
-                            <div key={item._id} className="alert alert-dark">
+                            <Alert color="primary" onClick={() => this.getPushTrackHistory(item._id)} key={item._id} className="alerts">
                                 <div style={{margin: '0'}}>
-                                    <span>{item.number}</span> | <b>{item.titleTrack}</b> | <span> {item.duration}</span>
-                                    <div style={{float: 'right'}}>
-                                        <span onClick={() => this.getPushTrackHistory(item._id)} style={{margin: '2.5px'}}><img src={imagePlay} alt=""/></span>
-                                        <span style={{margin: '2.5px'}}><img src={imagePause} alt=""/></span>
-                                    </div>
+                                    <span>{item.number}</span> | <b>{this.props.nameArtist && this.props.nameArtist.executor.nameArtist}-{item.titleTrack}</b> | <span> {item.duration}</span>
                                 </div>
-                            </div>
+                            </Alert>
                         ))}
                     </ListGroup>
                 </Container>

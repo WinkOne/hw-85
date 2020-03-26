@@ -14,13 +14,11 @@ export const getTrackHistory = () => {
         dispatch(trackHistoryRequest());
         return axiosApi.get('/track_history', {headers: {'Authorization': 'Token ' + user.token}}).then(response => {
             dispatch(trackHistorySuccess(response.data));
-            console.log(response.data);
         }, error => {
             dispatch(trackHistoryFailure(error));
         });
     }
 };
-
 
 export const trackHistoryPush = (id) => {
     return async (dispatch, getState) => {

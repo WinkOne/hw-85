@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import '../../App.css'
 import FormElement from "../../components/UI/Form/FormElement";
-import {Alert, Button, Col, Form, FormGroup} from "reactstrap";
+import {Alert, Badge, Col, Form, FormGroup} from "reactstrap";
 import {loginUser} from "../../store/action/usersActions";
 import {connect} from "react-redux";
+import Button from "@material-ui/core/Button";
 
 class Login extends Component {
     state = {
@@ -26,7 +27,7 @@ class Login extends Component {
     render() {
         return (
             <>
-                <h2>Login</h2>
+                <h1><Badge color="secondary">Login</Badge></h1>
                 <hr className="HRColor"/>
                 {this.props.error && (
                     <Alert color="danger">{this.props.error.error}</Alert>
@@ -53,7 +54,7 @@ class Login extends Component {
                     />
                     <FormGroup row>
                         <Col sm={{offset: 2, size: 10}}>
-                            <Button type="submit">
+                            <Button type="submit" variant="contained" color="primary">
                                 Login
                             </Button>
                         </Col>

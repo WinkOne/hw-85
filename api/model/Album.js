@@ -16,9 +16,13 @@ const AlbumSchema = new Schema({
         type: Number,
         required: true
     },
+    description: {
+        type: String,
+    },
     imageCover: {
         type: String,
-    }
+    },
+    public: false
 });
 
 const Album = mongoose.model( 'Album', AlbumSchema);
