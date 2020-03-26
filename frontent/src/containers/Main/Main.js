@@ -13,13 +13,13 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import PublicIcon from '@material-ui/icons/Public';
-import {deleteGoodsGet, publicArtist} from "../../store/action/artistAction";
+import {deleteArtistGet, publicArtist} from "../../store/action/artistAction";
 import {Redirect} from "react-router-dom";
 
 class Main extends Component {
     publishedArtist = (id, name, img, description) => {
         this.props.publicArtist(id, {nameArtist: name, imageArtist: img, infoArtist: description, published: false});
-        this.props.deleteGoodsGet(id)
+        this.props.deleteArtistGet(id)
     };
 
     componentDidMount(): void {
@@ -89,7 +89,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getArtist: () => dispatch(getArtist()),
         publicArtist: (id, put) => dispatch(publicArtist(id, put)),
-        deleteGoodsGet: (id) => dispatch(deleteGoodsGet(id))
+        deleteArtistGet: (id) => dispatch(deleteArtistGet(id))
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
