@@ -20,7 +20,12 @@ const TrackSchema = new Schema({
         type: String,
         required: true
     },
-    public: false
+    published : {
+        type: Boolean,
+        enum: [true, false],
+        default: false,
+        required: true
+    }
 });
 
 const Track = mongoose.model('Track', TrackSchema);
