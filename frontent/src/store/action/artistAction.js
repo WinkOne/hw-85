@@ -14,10 +14,10 @@ export const createArtist = data => {
     }
 };
 
-export const publicArtist = (id, data) => {
+export const publicArtist = (id) => {
     return async (dispatch, getState) => {
         const user = getState().users.user;
-        await axiosApi.post('/artist/' + id + '/public', data, {headers: {'Authorization': 'Token ' + user.token}});
+        await axiosApi.post('/artist/' + id + '/public', {publish: true}, {headers: {'Authorization': 'Token ' + user.token}});
         dispatch(getArtist());
     }
 };

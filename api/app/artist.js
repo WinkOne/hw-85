@@ -50,17 +50,14 @@ router.post('/', upload.single('imageArtist'), async (req, res) => {
 });
 
 router.post('/:id/public', [auth, permit('admin')], async (req, res) => {
-    const artistData = req.body;
-
-    artistData.imageArtist = req.body.imageArtist;
-
-    artistData.published = true;
-
-    const artist = Artist(artistData);
-
-    await artist.save();
-
-    res.send(artist)
+    try {
+        const artist = await Artist.findOne({_id: req.params.id});
+        artist.published = req.body.publish;
+        await artist.save();
+        res.send(artist)
+    } catch (e) {
+        console.log(e)
+    }
 });
 
 router.delete('/:id', [auth, permit('admin')], async (req, res) => {

@@ -10,19 +10,16 @@ const config = require('../config');
 
 
 const router = express.Router();
-
 router.get('/', async (req, res) => {
-    const query = req.query.artist;
-
-    if (req.query.artist){
-        const item = await Album.find({executor: query}).sort({yearOfIssueAlbum: 1}).populate('executor');
-        return res.send(item);
+    if(req.query.artist) {
+        const test2 = await Album.find({executor: req.query.artist});
+        res.send(test2);
+    } else {
+        const test = await Album.find();
+        res.send(test);
     }
-
-    const item = await Album.find().populate('executor');
-
-    res.send(item);
 });
+
 router.get('/:id', async (req, res) => {
     const item = await Album.findOne({_id: req.params.id}).populate('executor');
     res.send(item);

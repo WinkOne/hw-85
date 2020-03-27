@@ -20,12 +20,12 @@ class Main extends Component {
     state = {
         modal: false
     };
-    publishedArtist = (id, name, img, description) => {
-        this.props.publicArtist(id, {nameArtist: name, imageArtist: img, infoArtist: description, published: false});
-        this.props.deleteArtistGet(id)
+    publishedArtist = (id) => {
+        this.props.publicArtist(id);
+        // this.props.deleteArtistGet(id)
     };
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.props.getArtist()
     }
 
@@ -52,38 +52,40 @@ class Main extends Component {
                     </div>
                     <hr className="HRColor"/>
                     <div className="blockWindow">
-                        {this.props.artistThis && this.props.artistThis.map(item => (
-                            <Card key={item._id} style={{width: '320px', margin: '10px'}}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        onClick={!item.published ? () => this.publishedArtist(item._id, item.nameArtist, item.imageArtist, item.infoArtist, item.published) : this.toggleOpen}
-                                        style={{height: '200px'}}
-                                        image={"http://localhost:5556/uploads/" + item.imageArtist}
-                                        title="Contemplative Reptile"
-                                    />
-                                    <CardContent
-                                        onClick={!item.published ? () => this.publishedArtist(item._id, item.nameArtist, item.imageArtist, item.infoArtist, item.published) : this.toggleOpen}
-                                    >
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            {item.nameArtist}<span style={{float: 'right'}}>{item.published ?
-                                            <PublicIcon/> : <NotInterestedIcon/>}</span>
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            {item.infoArtist}
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button onClick={() => this.routerHandler(item._id)} size="small"
-                                            color="primary">
-                                        Watch albums
-                                    </Button>
-                                    {this.props.user && this.props.user.role === 'admin' ?
-                                        <Button onClick={() => this.deleteHandler(item._id)}
-                                                size="small">Delete</Button> : null}
-                                </CardActions>
-                            </Card>
-                        ))}
+                        {this.props.artistThis && this.props.artistThis.map(item => {
+                            return (
+                                <Card key={item._id} style={{width: '320px', margin: '10px'}}>
+                                    <CardActionArea>
+                                        <CardMedia
+                                            onClick={!item.published ? () => this.publishedArtist(item._id, item.nameArtist, item.imageArtist, item.infoArtist, item.published) : this.toggleOpen}
+                                            style={{height: '200px'}}
+                                            image={"http://localhost:5556/uploads/" + item.imageArtist}
+                                            title="Contemplative Reptile"
+                                        />
+                                        <CardContent
+                                            onClick={!item.published ? () => this.publishedArtist(item._id, item.nameArtist, item.imageArtist, item.infoArtist, item.published) : this.toggleOpen}
+                                        >
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                {item.nameArtist}<span style={{float: 'right'}}>{item.published ?
+                                                <PublicIcon/> : <NotInterestedIcon/>}</span>
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                {item.infoArtist}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                    <CardActions>
+                                        <Button onClick={() => this.routerHandler(item._id)} size="small"
+                                                color="primary">
+                                            Watch albums
+                                        </Button>
+                                        {this.props.user && this.props.user.role === 'admin' ?
+                                            <Button onClick={() => this.deleteHandler(item._id)}
+                                                    size="small">Delete</Button> : null}
+                                    </CardActions>
+                                </Card>
+                            )
+                        })}
                     </div>
                     <Modal isOpen={this.state.modal} toggle={this.toggle}>
                         {this.props.user && this.props.user.role === 'admin' ?
@@ -106,7 +108,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getArtist: () => dispatch(getArtist()),
-        publicArtist: (id, put) => dispatch(publicArtist(id, put)),
+        publicArtist: (id) => dispatch(publicArtist(id)),
         deleteArtistGet: (id) => dispatch(deleteArtistGet(id))
     }
 };
