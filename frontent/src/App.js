@@ -11,7 +11,6 @@ import artist from "./containers/Add/artist";
 import ButtonAppBar from "./components/UI/Toolbar/ButtonAppBar";
 import album from "./containers/Add/album";
 import track from "./containers/Add/track";
-import PublicPage from "./containers/Main/PublicPage";
 
 function App() {
     return (
@@ -23,7 +22,6 @@ function App() {
                 <Switch>
                     <Route path="/register" exact component={Register}/>
                     <Route path="/login" exact component={Login}/>
-                    <Route path="/public" exact component={PublicPage}/>
                     <Route path="/" exact component={Main}/>
                     <Route path="/addartist" exact component={artist}/>
                     <Route path="/addalbum" exact component={album}/>

@@ -80,7 +80,6 @@ export const getNameAlbum = (id) => {
         dispatch(fetchNameAlbumRequest());
         axiosApi.get('/album/' + id).then(response => {
             dispatch(fetchNameAlbumSuccess(response.data));
-            // console.log(response.data);
         }, error => {
             dispatch(fetchNameAlbumError(error));
         });
@@ -100,25 +99,24 @@ export const getAlbum = (id) => {
 
 
 export const getArtist = () => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        const user = getState().users.user;
         dispatch(fetchArtistRequest());
-        axiosApi.get('/artist').then(response => {
-            dispatch(fetchArtistSuccess(response.data));
-        }, error => {
-            dispatch(fetchArtistError(error));
-        });
+        if (!user) {
+            axiosApi.get('/artist', {headers: {'Authorization': 'anonim'}}).then(response => {
+                dispatch(fetchArtistSuccess(response.data));
+            }, error => {
+                dispatch(fetchArtistError(error));
+            });
+        } else {
+            axiosApi.get('/artist', {headers: {'Authorization': 'Token ' + user.token}}).then(response => {
+                dispatch(fetchArtistSuccess(response.data));
+            }, error => {
+                dispatch(fetchArtistError(error));
+            });
+        }
     }
 };
 
 
-export const getPublishedArtist = () => {
-    return dispatch => {
-        dispatch(fetchArtistRequest());
-        axiosApi.get('/artist/published').then(response => {
-            dispatch(fetchArtistSuccess(response.data));
-        }, error => {
-            dispatch(fetchArtistError(error));
-        });
-    }
-};
 

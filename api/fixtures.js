@@ -230,6 +230,11 @@ const run = async () => {
         album: bloodType,
         duration: '3:25',
         number: 5
+    }, {
+        titleTrack: 'Группа',
+        album: bloodType,
+        duration: '3:25',
+        number: 6
     });
     mongoose.connection.close();
 };

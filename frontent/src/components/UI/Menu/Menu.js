@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 const navLink = (<NavLink style={{textDecoration: 'none', color: 'black'}} to="/trackhistory">Track History</NavLink>);
 const addArtist = (<NavLink style={{textDecoration: 'none', color: 'black'}} to="/addartist">Add artist</NavLink>);
 const addAlbum = (<NavLink style={{textDecoration: 'none', color: 'black'}} to="/addalbum">Add album</NavLink>);
-const home = (<NavLink style={{textDecoration: 'none', color: 'black'}} to="/public">Home</NavLink>);
+const home = (<NavLink style={{textDecoration: 'none', color: 'black'}} to="/">Home</NavLink>);
 
 
 

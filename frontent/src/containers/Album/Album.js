@@ -45,7 +45,7 @@ class Album extends Component {
                                 <CardActionArea>
                                     <CardMedia
                                         style={{height: '200px'}}
-                                        image={"http://localhost:5555/uploads/" + item.imageCover}
+                                        image={"http://localhost:5556/uploads/" + item.imageCover}
                                         title="Contemplative Reptile"
                                     />
                                     <CardContent>

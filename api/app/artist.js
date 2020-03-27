@@ -12,13 +12,18 @@ const config = require('../config');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    const item = await Artist.find({published: false});
-    res.send(item);
-});
-router.get('/published', async (req, res) => {
-    const item = await Artist.find({published: true});
-    res.send(item);
+
+router.get('/', auth, async (req, res) => {
+    if (req.user.role === 'admin') {
+        const item = await Artist.find();
+        res.send(item);
+    } else if (req.user.role === 'user') {
+        const item = await Artist.find({published: true});
+        res.send(item);
+    } else if (req.user === 'anonim'){
+        const item = await Artist.find({published: true});
+        res.send(item);
+    }
 });
 
 
