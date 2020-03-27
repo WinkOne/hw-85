@@ -12,11 +12,11 @@ const config = require('../config');
 const router = express.Router();
 router.get('/', async (req, res) => {
     if(req.query.artist) {
-        const test2 = await Album.find({executor: req.query.artist});
-        res.send(test2);
+        const album = await Album.find({executor: req.query.artist});
+        res.send(album);
     } else {
-        const test = await Album.find();
-        res.send(test);
+        const item = await Album.find();
+        res.send(item);
     }
 });
 
