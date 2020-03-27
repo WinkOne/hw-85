@@ -22,6 +22,7 @@ class Main extends Component {
     };
     publishedArtist = (id) => {
         this.props.publicArtist(id);
+        // this.props.deleteArtistGet(id)
     };
 
     componentDidMount() {
@@ -56,13 +57,13 @@ class Main extends Component {
                                 <Card key={item._id} style={{width: '320px', margin: '10px'}}>
                                     <CardActionArea>
                                         <CardMedia
-                                            onClick={!item.published ? () => this.publishedArtist(item._id) : this.toggleOpen}
+                                            onClick={!item.published ? () => this.publishedArtist(item._id, item.nameArtist, item.imageArtist, item.infoArtist, item.published) : this.toggleOpen}
                                             style={{height: '200px'}}
                                             image={"http://localhost:5556/uploads/" + item.imageArtist}
                                             title="Contemplative Reptile"
                                         />
                                         <CardContent
-                                            onClick={!item.published ? () => this.publishedArtist(item._id) : this.toggleOpen}
+                                            onClick={!item.published ? () => this.publishedArtist(item._id, item.nameArtist, item.imageArtist, item.infoArtist, item.published) : this.toggleOpen}
                                         >
                                             <Typography gutterBottom variant="h5" component="h2">
                                                 {item.nameArtist}<span style={{float: 'right'}}>{item.published ?
@@ -80,7 +81,7 @@ class Main extends Component {
                                         </Button>
                                         {this.props.user && this.props.user.role === 'admin' ?
                                             <Button onClick={() => this.deleteHandler(item._id)}
-                                                    size="small" color="secondary">Delete</Button> : null}
+                                                    size="small">Delete</Button> : null}
                                     </CardActions>
                                 </Card>
                             )

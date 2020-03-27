@@ -2,8 +2,6 @@ const path = require('path');
 const express = require('express');
 const multer = require('multer');
 const nanoid = require('nanoid');
-const auth = require('../middleware/auth');
-const permit = require('../middleware/permit');
 
 const Album = require('../model/Album');
 
@@ -14,11 +12,11 @@ const config = require('../config');
 const router = express.Router();
 router.get('/', async (req, res) => {
     if(req.query.artist) {
-        const album = await Album.find({executor: req.query.artist});
-        res.send(album);
+        const test2 = await Album.find({executor: req.query.artist});
+        res.send(test2);
     } else {
-        const item = await Album.find();
-        res.send(item);
+        const test = await Album.find();
+        res.send(test);
     }
 });
 
@@ -47,27 +45,6 @@ router.post('/', upload.single('imageCover'), async (req, res) =>{
     await album.save();
 
     res.send(album)
-});
-
-router.post('/:id/public', [auth, permit('admin')], async (req, res) => {
-    try {
-        const artist = await Album.findOne({_id: req.params.id});
-        artist.published = req.body.publish;
-        await artist.save();
-        res.send(artist)
-    } catch (e) {
-        console.log(e)
-    }
-});
-
-router.delete('/:id', [auth, permit('admin')], async (req, res) => {
-    try {
-        await Album.findByIdAndDelete({_id: req.params.id});
-        console.log('Ok');
-        return res.send({message: 'Only the author can delete'});
-    } catch (e) {
-        res.send(e);
-    }
 });
 
 module.exports = router;

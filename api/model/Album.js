@@ -22,12 +22,7 @@ const AlbumSchema = new Schema({
     imageCover: {
         type: String,
     },
-    published : {
-        type: Boolean,
-        enum: [true, false],
-        default: false,
-        required: true
-    }
+    public: false
 });
 
 const Album = mongoose.model( 'Album', AlbumSchema);
