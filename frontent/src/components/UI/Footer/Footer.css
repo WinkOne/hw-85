@@ -1,0 +1,13 @@
+.footerBox{
+    width: 100%;
+    min-height: 240px;
+    background: url('../../../assets/image/fon_linii_krugi_razmery_temnyy_35098_1920x1080.jpg') 50% 50% no-repeat;
+    background-size: 100%;
+    margin-top: 20%;
+}
+.text{
+    color: aliceblue;
+    float: right;
+    margin-top: 16%;
+
+}

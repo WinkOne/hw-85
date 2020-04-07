@@ -11,8 +11,15 @@ import artist from "./containers/Add/artist";
 import ButtonAppBar from "./components/UI/Toolbar/ButtonAppBar";
 import album from "./containers/Add/album";
 import track from "./containers/Add/track";
+import TooltipButton from "./components/UI/Tooltip/TooltipButton";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import {useSelector} from "react-redux";
+
 
 function App() {
+    const user = useSelector(state => state.users.user);
+
     return (
         <Fragment>
             <header>
@@ -31,6 +38,11 @@ function App() {
                     <Route path="/trackhistory" component={TrackHistory}/>
                 </Switch>
             </Container>
+            {!user ? (
+                <Grid item xs={2}>
+                    <Paper><TooltipButton/></Paper>
+                </Grid>
+            ) : null}
         </Fragment>
     );
 }

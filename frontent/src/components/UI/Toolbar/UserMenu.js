@@ -23,8 +23,8 @@ const UserMenu = ({user, logout}) => {
         <>
             <div onClick={handleClick} style={{display: "flex"}}>
                 <Avatar style={{marginRight: '10px'}}
-                        src={user.avatar ? 'http://localhost:5556/uploads/' + user.avatar : "/broken-image.jpg"}/>
-                <p style={{marginTop: '10px'}}> Hello, {user.username}!</p>
+                        src={user.avatar ? user.avatar || 'http://localhost:5556/uploads/' + user.avatar : "/broken-image.jpg"}/>
+                <p style={{marginTop: '10px'}}> Hello, {user.firstName || user.username}!</p>
             </div>
             <Menu
                 id="simple-menu"

@@ -27,7 +27,10 @@ const UserSchema = new Schema({
     token: {
         type: String,
         required: true
-    }
+    },
+    firstName: String,
+    lastName: String,
+    facebookId: String
 });
 
 UserSchema.methods.generateToken = function() {

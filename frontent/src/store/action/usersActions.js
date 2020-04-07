@@ -53,6 +53,18 @@ export const loginUser = userData => {
     }
 };
 
+export const loginFacebook = facebookData => {
+    return async dispatch => {
+        try {
+            const response = await axiosApi.post('/users/facebook', facebookData);
+            dispatch(loginUserSuccess(response.data));
+            dispatch(push('/'));
+        } catch (error) {
+            dispatch(loginUserFailure(error.response.data));
+        }
+    }
+};
+
 export const logoutUserGet = () => {
     return async (dispatch, getState) => {
         const token = getState().users.user.token;

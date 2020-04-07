@@ -5,6 +5,7 @@ const User = require('../model/User');
 const bcrypt = require('bcrypt');
 const multer = require("multer");
 const nanoid = require('nanoid');
+const axios = require('axios');
 const config = require("../config");
 const router = express.Router();
 
@@ -19,7 +20,7 @@ router.post('/', upload.single('avatar'), async (req, res) => {
 
     const users = req.body;
 
-    if(req.file) {
+    if (req.file) {
         users.avatar = req.file.filename;
     }
 
@@ -29,29 +30,29 @@ router.post('/', upload.single('avatar'), async (req, res) => {
     });
 
     try {
-       user.generateToken();
+        user.generateToken();
 
-       await user.save();
+        await user.save();
 
-       return res.send(user);
+        return res.send(user);
 
-   } catch (error) {
+    } catch (error) {
 
-       return res.status(400).send(error);
+        return res.status(400).send(error);
 
-   }
+    }
 });
 
 router.post('/sessions', async (req, res) => {
     const user = await User.findOne({username: req.body.username});
 
-    if(!user) {
+    if (!user) {
         return res.status(400).send({error: 'Username or password not correct!'});
     }
 
     const isMatch = await bcrypt.compare(req.body.password, user.password);
 
-    if(!isMatch){
+    if (!isMatch) {
         return res.status(400).send({error: 'Username or password not correct!'});
     }
 
@@ -69,25 +70,60 @@ router.get('/', auth, async (req, res) => {
 });
 
 router.delete('/sessions', async (req, res) => {
-   const success = {message: 'Success'};
+    const success = {message: 'Success'};
 
-   try {
-       const token = req.get('Authorization').split(' ')[1];
+    try {
+        const token = req.get('Authorization').split(' ')[1];
 
-       if (!token) return res.send(success);
+        if (!token) return res.send(success);
 
-       const user = await User.findOne({token});
+        const user = await User.findOne({token});
 
-       if(!user) return res.send(success);
+        if (!user) return res.send(success);
 
-       user.generateToken();
+        user.generateToken();
 
-       await user.save();
+        await user.save();
 
-       return res.send(success);
-   } catch (e) {
-       return res.send(e)
-   }
+        return res.send(success);
+    } catch (e) {
+        return res.send(e)
+    }
+});
+
+router.post('/facebook', async (req, res) => {
+    const inputToken = req.body.accessToken;
+    const accessToken = config.facebook.appId + '|' + config.facebook.appSecret;
+    // try {
+    const url = `https://graph.facebook.com/debug_token?input_token=${inputToken}&access_token=${accessToken}&${req.body.id}/picture`;
+
+    const response = await axios.get(url);
+
+    if (response.data.data.error) {
+        return res.status(401).send({message: 'Facebook token incorrect'})
+    }
+
+    let user = await User.findOne({facebookId: req.body.id});
+    if (!user) {
+        const [firstName, lastName] = req.body.name.split(' ');
+
+        user = new User({
+            username: req.body.id,
+            password: nanoid(),
+            facebookId: req.body.id,
+            firstName,
+            lastName,
+            avatar: req.body.picture.data.url
+        })
+    }
+
+    user.generateToken();
+    await user.save();
+
+    return res.send(user)
+    // } catch (e) {
+    //     res.status(404).send(e)
+    // }
 });
 
 module.exports = router;
