@@ -87,10 +87,10 @@ export default function Menu() {
 
     return (
         <div>
-            <React.Fragment key={'left'}>
-                <Button style={{color: '#fff'}} onClick={toggleDrawer('left', true)}>{'menu'}</Button>
-                <Drawer anchor={'left'} open={state['left']} onClose={toggleDrawer('left', false)}>
-                    {list('left')}
+            <React.Fragment key={'top'}>
+                <Button style={{color: '#fff'}} onClick={toggleDrawer('top', true)}>{'menu'}</Button>
+                <Drawer anchor={'top'} open={state['top']} onClose={toggleDrawer('top', false)}>
+                    {list('top')}
                 </Drawer>
             </React.Fragment>
         </div>
